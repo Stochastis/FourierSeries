@@ -219,6 +219,45 @@ while True:
                                   frames=np.arange(1, 100, 0.05), interval=10)
         plt.show()
 
+    elif userInput == "Estimate H":
+        while True:
+            x_data = []
+            y_data = []
+
+            fig, ax = plt.subplots()
+            ax.set_xlim(-5, 5)
+            ax.set_ylim(-5, 5)
+            line, = ax.plot(0, 0)
+
+            # Create array of vectors
+            vectors = [
+                None] * int(input("Enter the number of vectors to be used in function estimations: "))
+
+            step = 1 / 100
+            for j in range(len(vectors)):
+                n = findN(j)
+                addedPoints = complex(0, 0)
+                # Calculate average point
+                for k in range(100):
+                    t = k * step
+                    actualValue = complex(
+                        0.75*(2 * (1 + math.cos(t)) * math.sin(t)), -(2 * (1 + math.cos(t)) * math.cos(t)))
+                    eTerm = (math.e**(-2*math.pi*i*n*t))
+                    addedPoints += (eTerm * actualValue)
+                averagePoint = addedPoints / 100
+                vectors[j] = {"coefficient": averagePoint}
+
+            def animation_frame(t):
+                x_data.append(estimatePoint(vectors, t).real)
+                y_data.append(-(estimatePoint(vectors, t).imag))
+
+                line.set_data(x_data, y_data)
+                return line,
+
+            animation = FuncAnimation(fig, func=animation_frame,
+                                      frames=np.arange(1, 100, 0.01), interval=10)
+            plt.show()
+
     elif userInput == "Display UDWD":
 
         x_data = []
