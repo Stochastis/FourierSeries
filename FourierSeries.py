@@ -14,27 +14,43 @@ General formula: cn = Integral from 0 to Max(t) of f(t) * e^(-n*2*pi*i*t)dt.
 Consider using an svg file to get sample points for the function.
 """
 
+"""
+Example Shapes:
+
+Upside down water droplet:
+x_data.append(math.sin(i)*math.cos(i)*math.log(abs(i)))
+y_data.append((abs(i)**0.3) * (math.cos(i)**(1/2)))
+
+Heart:
+x_data.append(0.75*(2 * (1 + math.cos(i)) * math.sin(i)))
+y_data.append(-(2 * (1 + math.cos(i)) * math.cos(i)))
+
+Italicized 8:
+x_data.append(math.sin(i)*math.cos(i)*math.log(abs(i)))
+y_data.append(2 * (1 + math.cos(i)) * math.sin(i))
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-
+import math
 x_data = []
 y_data = []
 
 fig, ax = plt.subplots()
-ax.set_xlim(0, 100)
-ax.set_ylim(0, 100)
+ax.set_xlim(-10, 10)
+ax.set_ylim(-10, 10)
 line, = ax.plot(0, 0)
 
 
 def animation_frame(i):
-    x_data.append(i*10)
-    y_data.append(i)
+    x_data.append(0.75*(2 * (1 + math.cos(i)) * math.sin(i)))
+    y_data.append(-(2 * (1 + math.cos(i)) * math.cos(i)))
 
     line.set_data(x_data, y_data)
     return line,
 
 
 animation = FuncAnimation(fig, func=animation_frame,
-                          frames=np.arange(0, 10, 0.01), interval=10)
+                          frames=np.arange(1, 90, 0.1), interval=10)
 plt.show()
